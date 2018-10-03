@@ -1,59 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 
-void printqueue(struct process *array, int size) {
+void printQueue(struct process *array) {
 	
 	int i;
 	
-	for(i=0;i<size;i++) {	
-		fprintf(stdout, "Name: %s Priority: %d \n",array[size]->name,arrau[size]->priority );
+	for(i=0;i<10;i++) {	
+		fprintf(stdout, "Name: %s Time Remaining: %d \n",array[size]->name,arrau[size]->timeRemaining);
 	}
 }
 
+void run(struct process *array, int &pos, int &proc_left, int quanta, char *timetable) {
 
+	if(array[pos]->startTime == -1)
+		array[pos]->startTime = quanta;
+	array[pos]->timeRemaining--;
+	if(array[pos]->timeRemaining == 0) {
+		array[pos]->completeTime = quanta;
+		strcat(timetable,array[pos]->name);
+		proc_left--;
+	}
+	quanta++;
+	pos++;
+	return;
 
+}
 
-char* roundrobin(struct process *array) {
+int avail(struct process *array, int &pos)
+{
+	int i;
+	for(i=pos;i<10;i++) {
+		if(array[i]->timeRemaining>0)
+			return i ;
+	}
+	for(i=0;i<pos;i++) {
+		if(array[i]->timeRemaining>0)
+			return i;
+	}
+}
+
+char* roundRobin(struct process *array) {
 
 	int i;
-	int size = 10;										// Total number of processes 
-	struct process priority1[size];
-	struct process priority2[size];
-	struct process priority3[size];								// 4 Different priority queues
-	struct process priority4[size];
-	int 1_pos = 0;									
-	int 2_pos = 0;										// Number of processes in each of the queues
-	int 3_pos = 0;
-	int 4_pos = 0;
 	int quanta = 0;
+	char* timechart;
+	int proc_left= size;
+	int pos = 0;
+
+	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
+	memset(timechart,"\n",sizeof(timechart));							// zero out memory to prevent garbage data
 	
-	for(i=0;i<size;i++) {									// Loop through all of the processes and copy each one to its respective priority queue
-		switch(array[size]->priority) {
-
-			case 1:
-				priority1[1_pos] = array[size];
-				1_pos++;
-				break;	
-			case 2:
-				priority2[2_pos] = array[size];
-				2_pos++;
-				break;
-			case 3:
-				priority3[3_pos] = array[size];
-				3_pos++;
-				break;
-			case 4:
-				priority4[4_pos] = array[size];
-				4pos++;
-				break;
-			default:
-				fprintf(stdout, "Unexpected priority level \n");
-
-		}
+	while(proc_left > 0) {
+		
+		pos = avail(array, pos);	
+		run(array,pos,quanta,timetable);
 	}
 
-	
+	printQueue(array);
+	return timechart;
 }
 
