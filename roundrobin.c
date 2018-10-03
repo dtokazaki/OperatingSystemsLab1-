@@ -59,7 +59,7 @@ char* roundRobin(struct process *array) {
 	char error[2] = "*";
 
 	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
-	memset(timechart,"\n",sizeof(timechart));						// zero out memory to prevent garbage data
+	memset(timechart,"\0",sizeof(timechart));						// zero out memory to prevent garbage data
 	
 	while(proc_left > 0) {									// Exit lop when no more processes left
 		
