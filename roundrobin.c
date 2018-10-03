@@ -16,6 +16,10 @@ void printQueue(struct process *array) {
 void run(struct process *array, int &pos, int &proc_left, int &quanta, char *timetable) {	// main function that runs the simulation
 
 	if(array[pos]->startTime == -1)								// startTime initialized to -1, which means it has not been updated
+		if(quanta > 99) {								// Don't start any new processes after 99 quantums
+			pos++;
+			return;
+		}
 		array[pos]->startTime = quanta;
 	array[pos]->timeRemaining--;								// decrement time remaining
 	if(array[pos]->timeRemaining == 0) {							// if the job is done, set the completeTime, append the name to the finished string, and decrement the amount of processes left
