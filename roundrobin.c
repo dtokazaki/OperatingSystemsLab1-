@@ -10,8 +10,11 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "fcfs.c"
+#include "roundrobin.h"
 
-void printQueue(struct process *array, int size) {
+
+void printQueue(struct Process *array, int size) {
 	
 	int i;
 	
@@ -20,7 +23,7 @@ void printQueue(struct process *array, int size) {
 	}
 }
 
-void run(struct process *array, int &pos, int &proc_left, int &quanta, char *timetable) {	// main function that runs the simulation
+void run(struct Process *array, int &pos, int &proc_left, int &quanta, char *timetable) {	// main function that runs the simulation
 
 	if(array[pos]->startTime == -1)								// startTime initialized to -1, which means it has not been updated
 		if(quanta > 99) {								// Don't start any new processes after 99 quantums
@@ -42,7 +45,7 @@ void run(struct process *array, int &pos, int &proc_left, int &quanta, char *tim
 
 }
 
-int avail(struct process *array, int &pos, int quanta, int size)						// Test to see if a process is available
+int avail(struct Process *array, int &pos, int quanta, int size)						// Test to see if a process is available
 {
 	int i;
 	for(i=pos;i<size;i++) {
@@ -56,7 +59,7 @@ int avail(struct process *array, int &pos, int quanta, int size)						// Test to
 	return -1;
 }
 
-char* roundRobin(struct process *array) {
+char* roundRobin(struct Process *array) {
 
 	int i;
 	int quanta = 0;
@@ -77,7 +80,7 @@ char* roundRobin(struct process *array) {
 			strcat(timetable,error);
 		}
 		else	
-			run(array,pos,quanta,timetable);					// Only run if there is a process available, and has arrived						
+			run(array,pos,proc_left,quanta,timetable);					// Only run if there is a process available, and has arrived						
 	}
 
 	printQueue(array);									// Print function for debugging purposes

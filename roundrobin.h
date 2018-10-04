@@ -6,7 +6,9 @@
 *
 */
 
-void printQueue(struct process *array, int size);
-void run(struct process *array,int &pos, int &proc_left, int &quanta, char *timetable);
-void avail(struct process *array, int &pos, int quanta, int size);
-char *roundRobin(struct process *array);
+#include "fcfs.c"
+
+void printQueue(struct Process *array, int size);
+void run(struct Process *array,int &pos, int &proc_left, int &quanta, char *timetable);
+void avail(struct Process *array, int &pos, int quanta, int size);
+char *roundRobin(struct Process *array);
