@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "fcfs.c"
+#include "roundrobin.c"
+#include "roundrobin.h"
 
 #define NUM_PROCESS 15
 
