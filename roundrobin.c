@@ -1,15 +1,22 @@
+/* 
+* This file implements the Round Robin scheduling algorithm
+*  
+*  COEN 383 Advanced Operating Systems
+*  Fall Quarter 2018
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
 
-void printQueue(struct process *array) {
+void printQueue(struct process *array, int size) {
 	
 	int i;
 	
-	for(i=0;i<10;i++) {	
-		fprintf(stdout, "Name: %s Time Remaining: %d \n",array[size]->name,arrau[size]->timeRemaining);
+	for(i=0;i<size;i++) {	
+		fprintf(stdout, "Name: %s Time Remaining: %d \n",array[i]->name,array[i]->runTimeRemaining);
 	}
 }
 
@@ -21,8 +28,8 @@ void run(struct process *array, int &pos, int &proc_left, int &quanta, char *tim
 			return;
 		}
 		array[pos]->startTime = quanta;
-	array[pos]->timeRemaining--;								// decrement time remaining
-	if(array[pos]->timeRemaining == 0) {							// if the job is done, set the completeTime, append the name to the finished string, and decrement the amount of processes left
+	array[pos]->runTimeRemaining--;								// decrement time remaining
+	if(array[pos]->runTimeRemaining == 0) {							// if the job is done, set the completeTime, append the name to the finished string, and decrement the amount of processes left
 		array[pos]->completeTime = quanta;
 		strcat(timetable,array[pos]->name);
 		proc_left--;
@@ -35,15 +42,15 @@ void run(struct process *array, int &pos, int &proc_left, int &quanta, char *tim
 
 }
 
-int avail(struct process *array, int &pos, int quanta)						// Test to see if a process is available
+int avail(struct process *array, int &pos, int quanta, int size)						// Test to see if a process is available
 {
 	int i;
-	for(i=pos;i<10;i++) {
-		if(array[i]->timeRemaining>0 && array[i]->arrivalTime <= quanta)		// Process must be still running, and have arrived before the current quanta
+	for(i=pos;i<size;i++) {
+		if(array[i]->runTimeRemaining>0 && array[i]->arrivalTime <= quanta)		// Process must be still running, and have arrived before the current quanta
 			return i;
 	}
 	for(i=0;i<pos;i++) {
-		if(array[i]->timeRemaining>0 array[i]->arrivalTime <= quanta)
+		if(array[i]->runTimeRemaining>0 array[i]->arrivalTime <= quanta)
 			return i;
 	}
 	return -1;
@@ -57,13 +64,14 @@ char* roundRobin(struct process *array) {
 	int proc_left= size;
 	int pos = 0;
 	char error[2] = "*";
+	int size = 15;														// Total amoutn of processes
 
 	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,"\0",sizeof(timechart));						// zero out memory to prevent garbage data
 	
 	while(proc_left > 0) {									// Exit lop when no more processes left
 		
-		pos = avail(array, pos);
+		pos = avail(array, pos, quanta, size);
 		if(pos == -1) {									// If no process is available, CPU is idle, and advance the quanta
 			quanta++;
 			strcat(timetable,error);
