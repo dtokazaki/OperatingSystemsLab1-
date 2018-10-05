@@ -36,21 +36,10 @@ int main() {
 		}
 	}
 
-	// Sort the processes.
-	int k;
-	struct process temp;
+	// Sort the processes.	
 	for(i = 0; i < 5; ++i) {
-		for(j = 0; j < NUM_PROCESS; ++j) {
-			for(k = 0; k < (NUM_PROCESS - j - 1); ++k) {
-				if(process_list[i][k].arrivalTime > process_list[i][k+1].arrivalTime) {
-					temp = process_list[i][k];
-					process_list[i][k] = process_list[i][k+1];
-					process_list[i][k+1] = temp;
-				}
-			}
-		}
+		sort_process(process_list[i]);
 	}
-	// sort_process(process_list);
 
 	// Name the processes.	
 	for(i = 0; i < 5; ++i) {
@@ -74,20 +63,18 @@ int main() {
 void print_process(struct process process) {
 	printf("Name: %c\nArrival Time: %i\nRun Time: %i\nPriority: %i\n", process.name, process.arrivalTime, process.runTime, process.priority);
 }
-/*
-void sort_process(struct Process * process_list) {
-	int i, j, k;
-	struct Process temp;
-	for(i = 0; i < 5; ++i) {
-		for(j = 0; j < NUM_PROCESS; ++j) {
-			for(k = 0; k < (NUM_PROCESS - j - 1); ++k) {
-				if(process_list[i][k].arrivalTime > process_list[i][k+1].arrivalTime) {
-					temp = process_list[i][k];
-					process_list[i][k] = process_list[i][k+1];
-					process_list[i][k+1] = temp;
-				}
+
+void sort_process(struct process * process_list) {
+	int i, j;
+	struct process temp;
+	for(i = 0; i < NUM_PROCESS; ++i) {
+		for(j = 0; j < (NUM_PROCESS - i - 1); ++j) {
+			if(process_list[j].arrivalTime > process_list[j+1].arrivalTime) {
+				temp = process_list[j];
+				process_list[j] = process_list[j+1];
+				process_list[j+1] = temp;
 			}
 		}
 	}
 }
-*/
+
