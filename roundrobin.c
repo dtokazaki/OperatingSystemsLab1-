@@ -21,35 +21,41 @@ void printQueue(struct process *array, int size) {
 	int i;
 	
 	for(i=0;i<size;i++) {	
-		fprintf(stdout, "Name: %c Time Remaining: %d \n",array[i].name,array[i].runTimeRemaining);
+		fprintf(stdout, "Name: %c Arrival Time: %d, Start Time: %d, runTime: %d, Time Remaining: %d \n",array[i].name,array[i].arrivalTime,array[i].startTime,array[i].runTime,array[i].runTimeRemaining);
 	}
 }
 
-void run(struct process *array, int *pos, int *proc_left, int *quanta, char *timetable) {	// main function that runs the simulation
+void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, char *timetable) {	// main function that runs the simulation
 
 	char *string;
 
 	string = (char*)malloc(2*sizeof(char));
 	memset(string,'\0', sizeof(string));
 
-	if(array[*pos].startTime == -1)								// startTime initialized to -1, which means it has not been updated
-		if(*quanta > 99) {								// Don't start any new processes after 99 quantums
-			pos++;
+	if(array[*pos].startTime == -1) {
+		if(*quanta <= 99) {							// startTime initialized to -1, which means it has not been updated
+			array[*pos].startTime = *quanta;
+		}
+		else {
+			(*quanta)++;
 			return;
 		}
-		array[*pos].startTime = *quanta;
-	array[*pos].runTimeRemaining--;								// decrement time remaining
+
+	}
+	array[*pos].runTimeRemaining--;		
+
+	string[0] = array[*pos].name;
+	strcat(timetable,string);
+
 	if(array[*pos].runTimeRemaining == 0) {							// if the job is done, set the completeTime, append the name to the finished string, and decrement the amount of processes left
 		array[*pos].completeTime = *quanta;
-		string[0] = array[*pos].name;
-		strcat(timetable,string);
-		*proc_left--;
+		(*proc_left)--;
 	}
-	*quanta++;										// increase the quanta
-	*pos++;
-	if(*pos == 10)										// if the pos reaches the end of the array, start over from the begining
+
+	(*quanta)++;	 										// increase the quanta
+	(*pos)++;
+	if(*pos == size)										// if the pos reaches the end of the array, start over from the begining
 		*pos = 0;
-	return;
 
 }
 
@@ -75,24 +81,29 @@ char* roundRobin(struct process *array) {
 	int size = 15;										// Total amount of processes
 	int proc_left= size;
 	int pos = 0;
+	int oldpos;
 	char error[2] = "*";
 							
-
 	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
 	
-	while(proc_left > 0) {									// Exit lop when no more processes left
-		
+	 while(proc_left > 0 && quanta <= 110) {									// Exit lop when no more processes left
+		oldpos = pos;
 		pos = avail(array, pos, quanta, size);
-		if(pos == -1) {									// If no process is available, CPU is idle, and advance the quanta
-			quanta++;
+	
+		if(pos == -1) {
+			quanta++;								// If no process is available, CPU is idle, and advance the quanta
 			strcat(timechart,error);
+			pos=oldpos;								// reset pos back to old position
 		}
-		else	
-			run(array,&pos,&proc_left,&quanta,timechart);					// Only run if there is a process available, and has arrived						
+		else {	
+			
+			run(array,&pos,&proc_left,&quanta,size,timechart);			// Only run if there is a process available, and has arrived						
+		}
 	}
-
+	
 	printQueue(array,size);									// Print function for debugging purposes
+
 	return timechart;
 }
 #endif
