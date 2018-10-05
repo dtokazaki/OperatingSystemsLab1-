@@ -1,9 +1,9 @@
 CC	= gcc
 
-all:	schedule
+all:	lab1
 
-schedule:	main.c roundrobin.c roundrobin.h fcfs.c
-	$(CC) -o main.c roundrobin.c fcfs.c
+lab1:	main.c roundrobin.c roundrobin.h fcfs.c
+	$(CC) -o lab1 main.c roundrobin.c fcfs.c
 
 
-clean:;	rm -f schedule
+clean:;	rm -f lab1
