@@ -6,7 +6,7 @@
 *
 */
 
-#ifndef COEM383_LAB1
+#ifndef COEN383_LAB1
 #define COEN383_LAB1
 
 void printQueue(struct process *array, int size);
