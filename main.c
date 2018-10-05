@@ -64,8 +64,14 @@ int main() {
 	printf("%i\n", process_list[0][0].completeTime);
 	printf("%i\n", process_list[0][0].runTime);
 
-	roundRobinTable = roundRobin(&process_list[0][0]);
-	printf("%s",roundRobinTable);
+
+	printf("Start Round Robin Test\n");
+	//process_list[1][0].arrivalTime = 0;	// TEST cases
+	//process_list[1][0].runTimeRemaining = 2;
+	//process_list[1][1].arrivalTime = 2;	// TEST cases
+	//process_list[1][1].runTimeRemaining = 2;
+	roundRobinTable = roundRobin(process_list[1]);
+	printf("%s \n",roundRobinTable);
 		
 
 	return 0;
