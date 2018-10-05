@@ -3,18 +3,20 @@
 #include <stdio.h>
 
 #include "fcfs.c"
+#include "roundrobin.h"
 
 #define NUM_PROCESS 15
 
-void print_process(struct Process);
+void print_process(struct process);
+void sort_process(struct process *);
 
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
-	struct Process process_list[5][NUM_PROCESS];
+	struct process process_list[5][NUM_PROCESS];
 	
 	// Fill the process list with random processes.
 	int i, j, arrivalTime, runTime, priority;
-	struct Process insert;
+	struct process insert;
 	srand(time(NULL));
 	for(i = 0; i < 5; ++i) {
 		for(j = 0; j < NUM_PROCESS; ++j) {
@@ -34,7 +36,7 @@ int main() {
 
 	// Sort the processes.
 	int k;
-	struct Process temp;
+	struct process temp;
 	for(i = 0; i < 5; ++i) {
 		for(j = 0; j < NUM_PROCESS; ++j) {
 			for(k = 0; k < (NUM_PROCESS - j - 1); ++k) {
@@ -46,6 +48,7 @@ int main() {
 			}
 		}
 	}
+	// sort_process(process_list);
 
 	// Name the processes.	
 	for(i = 0; i < 5; ++i) {
@@ -64,6 +67,23 @@ int main() {
 	return 0;
 }
 
-void print_process(struct Process process) {
+void print_process(struct process process) {
 	printf("Name: %c\nArrival Time: %i\nRun Time: %i\nPriority: %i\n", process.name, process.arrivalTime, process.runTime, process.priority);
 }
+/*
+void sort_process(struct Process * process_list) {
+	int i, j, k;
+	struct Process temp;
+	for(i = 0; i < 5; ++i) {
+		for(j = 0; j < NUM_PROCESS; ++j) {
+			for(k = 0; k < (NUM_PROCESS - j - 1); ++k) {
+				if(process_list[i][k].arrivalTime > process_list[i][k+1].arrivalTime) {
+					temp = process_list[i][k];
+					process_list[i][k] = process_list[i][k+1];
+					process_list[i][k+1] = temp;
+				}
+			}
+		}
+	}
+}
+*/

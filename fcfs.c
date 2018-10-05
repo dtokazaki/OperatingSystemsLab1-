@@ -3,12 +3,13 @@
  * This file implements the First-Come First-Serve (FCFS) scheduling algorithm.
  * Written for COEN 383 | Fall 2018
  */
-
 #include <string.h>
 #include <stdio.h>
 
+#include "process.c"
+
 // Create a structure for each process.
-typedef struct Process {
+struct Process {
 	char name;
 	int arrivalTime;
 	int runTime;
@@ -16,15 +17,30 @@ typedef struct Process {
 	int startTime;
 	int completeTime;
 	int runTimeRemaining;
-} Process;
+};
 
-const char * schedule(struct Process * process_list, int size) {
+
+/*
+ * schedule(struct Process *, int)
+ * This function will run the FCFS scheduling algorithm on the input queue.
+ * Preconditions:
+ *  process_list: A list of that contains Processes in the order of their arrival.
+ *  size: The size of the process_list that is being inputted.
+ *
+ * Postconditions:
+ *  process_list: The startTime, completeTime, and runTimeRemaining fields for
+ *   each process will be updated with what has run.
+ *  return: A string will be returned that shows when each process has run. 
+ *   If a process did not run then it will contain a '-' instead.
+ */
+const char * schedule(struct process * process_list, int size) {
 	// Set the location in the 'queue' to the head.
 	int loc = 0;
 	// Initialize the output string.
-	char output[120];
-	// Initialize the current process.
-	struct Process curProcess;
+	char output[101];
+
+	// Initialize the current process with a remaining run time of zero.
+	struct process curProcess;
 	curProcess.runTimeRemaining = 0;
 	
 	// Run through time.
@@ -53,6 +69,9 @@ const char * schedule(struct Process * process_list, int size) {
 		}
 	}
 
+	// Ensure that the string is properly terminated.
 	output[100] = '\0';
+
+	// Return the string.
 	return strdup(&output[0]);
 }
