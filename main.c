@@ -13,6 +13,8 @@ void print_process(struct Process);
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
 	struct Process process_list[5][NUM_PROCESS];
+
+	char *roundRobinTable = (char*)malloc(111*sizeof(char));
 	
 	// Fill the process list with random processes.
 	int i, j, arrivalTime, runTime, priority;
@@ -61,7 +63,9 @@ int main() {
 	printf("%i\n", process_list[0][0].completeTime);
 	printf("%i\n", process_list[0][0].runTime);
 
-	
+	roundRobinTable = roundRobin(&process_list[0][0]);
+	printf("%s",roundRobinTable);
+		
 
 	return 0;
 }
