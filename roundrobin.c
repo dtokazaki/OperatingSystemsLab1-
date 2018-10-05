@@ -11,7 +11,9 @@
 #include <stdbool.h>
 
 #include "fcfs.c"
-#include "roundrobin.h"
+
+#ifndef COEN383_LAB1
+#define COEN383_LAB1
 
 
 void printQueue(struct Process *array, int size) {
@@ -93,4 +95,4 @@ char* roundRobin(struct Process *array) {
 	printQueue(array,size);									// Print function for debugging purposes
 	return timechart;
 }
-
+#endif

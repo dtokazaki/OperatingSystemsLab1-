@@ -7,6 +7,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifndef COEN383_LAB1
+#define COEN383_LAB1
+
 // Create a structure for each process.
 typedef struct Process {
 	char name;
@@ -56,3 +59,5 @@ const char * schedule(struct Process * process_list, int size) {
 	output[100] = '\0';
 	return strdup(&output[0]);
 }
+
+#endif
