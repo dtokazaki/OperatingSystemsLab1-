@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "fcfs.c"
-#include "roundrobin.h"
+#include "roundrobin.c"
 
 #define NUM_PROCESS 15
 
@@ -13,7 +13,9 @@ void sort_process(struct process *);
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
 	struct process process_list[5][NUM_PROCESS];
-	
+
+	char *roundRobinTable = (char*)malloc(111*sizeof(char));
+
 	// Fill the process list with random processes.
 	int i, j, arrivalTime, runTime, priority;
 	struct process insert;
@@ -62,7 +64,9 @@ int main() {
 	printf("%i\n", process_list[0][0].completeTime);
 	printf("%i\n", process_list[0][0].runTime);
 
-	
+	roundRobinTable = roundRobin(&process_list[0][0]);
+	printf("%s",roundRobinTable);
+		
 
 	return 0;
 }
