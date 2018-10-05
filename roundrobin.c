@@ -10,13 +10,13 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "fcfs.c"
+#include "process.c"
 
 #ifndef COEN383_LAB1
 #define COEN383_LAB1
 
 
-void printQueue(struct Process *array, int size) {
+void printQueue(struct process *array, int size) {
 	
 	int i;
 	
@@ -25,7 +25,7 @@ void printQueue(struct Process *array, int size) {
 	}
 }
 
-void run(struct Process *array, int *pos, int *proc_left, int *quanta, char *timetable) {	// main function that runs the simulation
+void run(struct process *array, int *pos, int *proc_left, int *quanta, char *timetable) {	// main function that runs the simulation
 
 	char *string;
 
@@ -53,7 +53,7 @@ void run(struct Process *array, int *pos, int *proc_left, int *quanta, char *tim
 
 }
 
-int avail(struct Process *array, int pos, int quanta, int size)						// Test to see if a process is available
+int avail(struct process *array, int pos, int quanta, int size)						// Test to see if a process is available
 {
 	int i;
 	for(i=pos;i<size;i++) {
@@ -67,7 +67,7 @@ int avail(struct Process *array, int pos, int quanta, int size)						// Test to 
 	return -1;
 }
 
-char* roundRobin(struct Process *array) {
+char* roundRobin(struct process *array) {
 
 	int i;
 	int quanta = 0;

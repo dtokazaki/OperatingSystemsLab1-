@@ -6,6 +6,7 @@
  */
 
 // The process structure
+
 struct process {
 	// These properties are assigned before scheduling
 	char name;				// The name of the process.
@@ -17,3 +18,5 @@ struct process {
 	int completeTime;		// The time that the process completed running.
 	int runTimeRemaining;	// The amount of time left to run.
 };
+
+
