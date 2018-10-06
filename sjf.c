@@ -5,11 +5,6 @@
 #include "process.c"
 
 char * sjf(struct process *processes) {
-	
-	int i;
-    	for (i=0; i<10;i++){
-	    printf("%c, %d, %d\n", processes[i].name, processes[i].arrivalTime, processes[i].runTime);
-	}
 
 	char quantum[120];
 	int p_index = 0;
@@ -18,7 +13,6 @@ char * sjf(struct process *processes) {
 	// run the algorithm
 	for (time=0; time<100;time++) {
 		if (processes[p_index].runTimeRemaining != 0 && time>=processes[p_index].arrivalTime){  // check if process is still running
-		    printf("%c\n", processes[p_index].name);		// debug to see character
 			quantum[time] = processes[p_index].name;;	// if so, label time with process name
 			processes[p_index].runTimeRemaining--;		// decrement the running time
 		}
@@ -43,7 +37,6 @@ char * sjf(struct process *processes) {
 				processes[p_index].runTimeRemaining--;		// decrement run time remaining for new process
 			}
 		}
-		printf("%d, %d, %c, %d\n", time, processes[p_index].runTimeRemaining, quantum[i], p_index); // check the state of every quantum
 	}
 
 	quantum[119] = '\0';	
