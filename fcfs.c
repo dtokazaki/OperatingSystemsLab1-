@@ -33,7 +33,7 @@ struct Process {
  *  return: A string will be returned that shows when each process has run. 
  *   If a process did not run then it will contain a '-' instead.
  */
-const char * schedule(struct process * process_list, int size) {
+char * schedule(struct process * process_list, int size) {
 	// Set the location in the 'queue' to the head.
 	int loc = 0;
 	// Initialize the output string.

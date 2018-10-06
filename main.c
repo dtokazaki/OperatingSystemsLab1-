@@ -5,7 +5,7 @@
 #include "fcfs.c"
 #include "roundrobin.c"
 #include "sjf.c"
-#include "hpf.c"
+
 
 #define NUM_PROCESS 15
 
@@ -63,6 +63,8 @@ int main() {
 	//process_list[1][1].runTimeRemaining = 2;
 	roundRobinTable = roundRobin(process_list[1]);
 	printf("%s \n",roundRobinTable);
+
+	printf("%s\n", sjf(process_list[2]));
 		
 
 	return 0;

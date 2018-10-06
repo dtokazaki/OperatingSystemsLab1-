@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <process.c>
+
+#include "process.c"
 
 char * sjf(struct process *processes) {
 	
@@ -24,10 +25,10 @@ char * sjf(struct process *processes) {
 		else {
 			tempIndex = p_index;				// store p_index in a temp
 			runTimeToken = 11;				// reset runTimeToken
-			if (processes[p_index].completeTime == 0) 	// if not already added, add the completed time for the previous process
+			if (processes[p_index].completeTime == -1) 	// if not already added, add the completed time for the previous process
 				processes[p_index].completeTime = time;
 			for (i=0;i<10;i++) {
-				if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == 0) { // lots of conditions
+				if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == -1) { // lots of conditions
 					p_index = i; 			// update the index to the next processes
 					runTimeToken = processes[p_index].runTime;  // update the runTimeToken
 				} 
@@ -44,7 +45,8 @@ char * sjf(struct process *processes) {
 		}
 		printf("%d, %d, %c, %d\n", time, processes[p_index].runTimeRemaining, quantum[i], p_index); // check the state of every quantum
 	}
-	
-	return strdup(&processes[0]);
+
+	quantum[119] = '\0';	
+	return strdup(&quantum[0]);
 
 };
