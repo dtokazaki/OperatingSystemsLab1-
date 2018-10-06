@@ -103,7 +103,7 @@ char* roundRobin(struct process *array) {
 		}
 	}
 	
-	printQueue(array,size);									// Print function for debugging purposes
+	//printQueue(array,size);									// Print function for debugging purposes
 
 	return timechart;
 }
