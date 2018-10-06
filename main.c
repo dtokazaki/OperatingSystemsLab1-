@@ -5,6 +5,7 @@
 #include "fcfs.c"
 #include "roundrobin.c"
 #include "sjf.c"
+#include "hpf.c"
 
 #define NUM_PROCESS 15
 
