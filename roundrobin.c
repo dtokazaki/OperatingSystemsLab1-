@@ -15,7 +15,7 @@
 #ifndef COEN383_LAB1
 #define COEN383_LAB1
 
-
+#define NUM_PROCESS 15
 void printQueue(struct process *array, int size) {
 	
 	int i;
@@ -78,7 +78,7 @@ char* roundRobin(struct process *array) {
 	int i;
 	int quanta = 0;
 	char* timechart;
-	int size = 15;										// Total amount of processes
+	int size = NUM_PROCESS;										// Total amount of processes
 	int proc_left= size;
 	int pos = 0;
 	int oldpos;
@@ -87,7 +87,7 @@ char* roundRobin(struct process *array) {
 	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
 	
-	 while(proc_left > 0 && quanta <= 110) {									// Exit lop when no more processes left
+	 while(proc_left > 0 && quanta <= 110) {						// Exit loop when no more processes left
 		oldpos = pos;
 		pos = avail(array, pos, quanta, size);
 	
