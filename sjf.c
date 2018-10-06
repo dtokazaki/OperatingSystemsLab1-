@@ -9,6 +9,7 @@ char * sjf(struct process *processes) {
 	char quantum[120];
 	int p_index = 0;
 	int time, runTimeToken, tempIndex;
+	int i;
 	
 	// run the algorithm
 	for (time=0; time<100;time++) {
