@@ -11,6 +11,7 @@
 
 void print_process(struct process);
 void sort_process(struct process *);
+void reset_process(struct process *);
 
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
@@ -50,22 +51,35 @@ int main() {
 		}
 	}
 
-	printf("%s\n", schedule(process_list[0], NUM_PROCESS));
-	printf("%i\n", process_list[0][0].startTime);
-	printf("%i\n", process_list[0][0].completeTime);
-	printf("%i\n", process_list[0][0].runTime);
+	// FCFS Test.
+	printf("\n == Starting First-Come First-Serve Test == \n\n");
+	for(i = 0; i < 5; ++i) {
+		printf("Test %i:\n", i + 1);
+		printf("%s\n", schedule(process_list[i], NUM_PROCESS));
+		printf("Calculate values here\n\n");
+		reset_process(process_list[i]);
+	}
 
-
-	printf("Start Round Robin Test\n");
-	//process_list[1][0].arrivalTime = 0;	// TEST cases
-	//process_list[1][0].runTimeRemaining = 2;
-	//process_list[1][1].arrivalTime = 2;	// TEST cases
-	//process_list[1][1].runTimeRemaining = 2;
+	// RR test
+	printf("\n == Starting Round Robin Test == \n\n");
 	roundRobinTable = roundRobin(process_list[1]);
 	printf("%s \n",roundRobinTable);
 
+	// SJF test
+	printf("\n == Starting Shortest Job First Test == \n\n");
 	printf("%s\n", sjf(process_list[2]));
-		
+
+	// SRJF test
+	printf("\n == Starting Shortest Remaining Job First Test == \n\n");
+	
+
+	// HPF (non-preemtive) test
+	printf("\n == Starting Highest Priority First (non-preemptive) Test == \n\n");
+
+
+	// HPF (preemptive) test
+	printf("\n == Starting Highest Priority First (preemtive) Test == \n\n");
+
 
 	return 0;
 }
@@ -85,6 +99,15 @@ void sort_process(struct process * process_list) {
 				process_list[j+1] = temp;
 			}
 		}
+	}
+}
+
+void reset_process(struct process * process_list) {
+	int i;
+	for(i = 0; i < NUM_PROCESS; ++i) {
+		process_list[i].startTime = -1;
+		process_list[i].completeTime = -1;
+		process_list[i].runTimeRemaining = process_list[i].runTime;
 	}
 }
 
