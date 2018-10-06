@@ -38,6 +38,7 @@ void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, 
 		}
 		else {
 			(*quanta)++;
+			(*proc_left)--;
 			return;
 		}
 
@@ -84,10 +85,10 @@ char* roundRobin(struct process *array) {
 	int oldpos;
 	char error[2] = "*";
 							
-	timechart = (char*) malloc(111*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
+	timechart = (char*) malloc((size*10+1)*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
 	
-	 while(proc_left > 0 && quanta <= 110) {						// Exit loop when no more processes left
+	 while(proc_left > 0 && quanta <= (size*10)) {						// Exit loop when no more processes left
 		oldpos = pos;
 		pos = avail(array, pos, quanta, size);
 	
@@ -98,7 +99,7 @@ char* roundRobin(struct process *array) {
 		}
 		else {	
 			
-			run(array,&pos,&proc_left,&quanta,size,timechart);			// Only run if there is a process available, and has arrived						
+			run(array,&pos,&proc_left,&quanta,size,timechart);			// Only run if there is a process available, and has arrived	
 		}
 	}
 	
