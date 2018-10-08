@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef enum { false, true } bool;  
+
 struct process {
 	char name;
 	int arrivalTime; // 0-99
@@ -53,34 +55,49 @@ int main() {
 	char quantum[120];
 	int p_index = 0;
 	int time, runTimeToken, tempIndex;
+	bool change;
 	
 	// run the algorithm
 	for (time=0; time<100;time++) {
 		runTimeToken = 11;
+		change = false;
 		tempIndex = p_index;
 		for (i=0;i<10;i++) {
-			if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].runTimeRemaining != 0) { // lots of conditions
+			if (processes[i].arrivalTime <= time && processes[i].runTimeRemaining < runTimeToken && processes[i].runTimeRemaining > 0) { // lots of conditions
 				p_index = i; 								// update the index to the next processes
-				runTimeToken = processes[p_index].runTime;  // update the runTimeToken
+				runTimeToken = processes[p_index].runTimeRemaining;  // update the runTimeToken
+				change = true;
 			} 
 		}
-
-		if (tempIndex == p_index) {						// if there isn't a new process
-			if (processes[p_index].completeTime != -1)	 	// check to see if the current process is done
-				quantum[time] = '-';							// if so, then just write a blank
-			else {											// else if the current process is still running,
-				quantum[time] = processes[p_index].name;;		// label time with process name
-				processes[p_index].runTimeRemaining--;			// and decrement the remaining run time
+		
+		if (!change) {				// if there was no change in p_index	
+			if (processes[p_index].runTimeRemaining > 0 && processes[p_index].arrivalTime<=time) {	   // if same process still running
+			    if (processes[p_index].runTimeRemaining == processes[p_index].runTime)
+			        processes[p_index].startTime = time;
+			    quantum[time] = processes[p_index].name;		
+				printf("%c\n", processes[p_index].name);
+				processes[p_index].runTimeRemaining--;
+			}
+			else if (processes[p_index].completeTime == 0 && processes[p_index].runTimeRemaining == 0) {  // if same process has ended
+			    quantum[time] = '-';	
+				printf("%c\n", '-');
+			    processes[tempIndex].completeTime = time-1;
+			}
+			else {						    // there is no process running
+				quantum[time] = '-';	
+				printf("%c\n", '-');
 			}
 		}
-		else {												// if there is new a process,
-			if (processes[tempIndex].runTimeRemaining == 0)		// if previous process is done
-				processes[tempIndex].completeTime = time;			// then set the complete time 
-			processes[p_index].startTime = time;				// set the start time for the next process (new current),
-			quantum[time] = processes[p_index].name;			// label time with the new process name,
-			processes[p_index].runTimeRemaining--;				// and decrement the remaining run time
+		else {					// if the p_index changed						
+			if (processes[tempIndex].runTimeRemaining == 0 && processes[tempIndex].completeTime == 0)	 // if previous process is complete
+				processes[tempIndex].completeTime = time-1;			
+			if  (processes[p_index].runTimeRemaining == processes[p_index].runTime)
+			    processes[p_index].startTime = time;				
+			quantum[time] = processes[p_index].name;			
+			printf("%c\n", processes[p_index].name);
+			processes[p_index].runTimeRemaining--;				
 		}
 
-		printf("%d, %d, %c, %d\n", time, processes[p_index].runTimeRemaining, quantum[i], p_index);
+		printf("%d, %d, %c, %d, %d, %d\n", time, processes[p_index].runTimeRemaining, quantum[i], p_index,processes[tempIndex].startTime, processes[tempIndex].completeTime);
 	}
 };
