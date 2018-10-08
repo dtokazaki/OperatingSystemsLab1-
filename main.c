@@ -9,9 +9,17 @@
 
 #define NUM_PROCESS 15
 
+struct average {
+	double turnaround;
+	double waiting;
+	double response;
+	int throughput;
+}
+
 void print_process(struct process);
 void sort_process(struct process *);
 void reset_process(struct process *);
+struct average averages(struct process *);
 
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
@@ -111,3 +119,21 @@ void reset_process(struct process * process_list) {
 	}
 }
 
+struct average averages(struct process * process_list) {
+	int i;
+	double response = 0;
+	double waiting = 0;
+	double turnaround = 0;
+	for(i = 0; i < NUM_PROCESS; ++i) {
+		response += process_list[i].startTime - process_list[i].arrivalTime;
+		waiting += (process_list[i].completeTime - process_list[i].arrivalTime) - process_list[i].runTime;
+		turnaround += (process_list[i].completeTime - process_list[i].arrivalTime);
+	}
+
+	struct average aveReturn;
+	aveReturn.response = response / NUM_PROCESS;
+	aveReturn.waiting = waiting / NUM_PROCESS;
+	aveReturn.turnaround = turnaround / NUM_PROCESS;
+
+	return aveReturn;
+}
