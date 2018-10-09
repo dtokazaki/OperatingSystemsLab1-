@@ -289,9 +289,9 @@ struct average averages(struct process * process_list) {
 	}
 
 	struct average aveReturn;
-	aveReturn.response = response / NUM_PROCESS;
-	aveReturn.waiting = waiting / NUM_PROCESS;
-	aveReturn.turnaround = turnaround / NUM_PROCESS;
+	aveReturn.response = response / numStarted;
+	aveReturn.waiting = waiting / numCompleted;
+	aveReturn.turnaround = turnaround / numCompleted;
 
 	return aveReturn;
 }
