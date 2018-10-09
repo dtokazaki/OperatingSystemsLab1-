@@ -28,7 +28,7 @@ char * srt(struct process *processes) {
 				quantum[time] = processes[p_index].name;	// then put the process name in our quantum
 				processes[p_index].runTimeRemaining--;		// and decrement the runTimeRemaining
 			}
-			else if (processes[p_index].completeTime == 0 && processes[p_index].runTimeRemaining == 0) {  // if process has ended
+			else if (processes[p_index].completeTime == -1  && processes[p_index].runTimeRemaining == 0) {  // if process has ended
 				quantum[time] = '-';	// then add a '-' to our quantum
 				processes[tempIndex].completeTime = time-1; // and set its complete time
 			}
@@ -36,7 +36,7 @@ char * srt(struct process *processes) {
 				quantum[time] = '-';	// just put a '-' in our quantum
 		}
 		else {   // if the p_index changed, aka we have a different or new process						
-			if (processes[tempIndex].runTimeRemaining == 0 && processes[tempIndex].completeTime == 0)  // if previous process is complete
+			if (processes[tempIndex].runTimeRemaining == 0 && processes[tempIndex].completeTime == -1)  // if previous process is complete
 				processes[tempIndex].completeTime = time-1;	// then set its complete time
 			if  (processes[p_index].runTimeRemaining == processes[p_index].runTime)  // if the next process is entirely new
 				processes[p_index].startTime = time;	// set its start time	
