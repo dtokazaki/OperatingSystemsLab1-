@@ -10,7 +10,7 @@ struct priorityQueue {
         int size;
     };
 
-const char * preemptivehpf(struct process *processList, int size) {
+const char * nonpreemptivehpf(struct process *processList, int size) {
     // initialize priority queues. For simplicity, queues[n] is priority n. priority 0 is unused
     struct priorityQueue queues[4];
     queues[1].size = 0;
