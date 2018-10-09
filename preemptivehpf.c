@@ -75,7 +75,41 @@ const char * preemptivehpf(struct process *processList, int size) {
         }
 	}
 
-    // 
+    // Update original process list with starttime and completetime of each process
+    for (i = 0; i < size; i++) {
+        curQueue = 4;
+        queueIndex = 0;
+
+        // find the process matched by name
+        int j;
+        for (j = 0; j < size; j++)
+        {
+            // If we've reached the end of the current queue
+            if(queueIndex == queues[curQueue].size) {
+                // if this is the lowest queue, then we are done
+                if (curQueue == 1) {
+                    break;
+                }
+                // otherwise, go to the next queue
+                curQueue--;
+                queueIndex = 0;
+            }
+
+            // make a pointer to the current proccess for simplicity
+            curProcess = &queues[curQueue].queue[queueIndex];
+
+            // if match by name, update its values and break
+            if (curProcess->name == processList[i].name) {
+                processList[i].startTime = curProcess->startTime;
+                processList[i].completeTime = curProcess->completeTime;
+                break;
+            }
+
+            
+            queueIndex++;
+        }
+    }
+
 
 	// Ensure that the string is properly terminated.
 	output[100] = '\0';
