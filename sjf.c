@@ -12,8 +12,8 @@ char * sjf(struct process *processes) {
 	int i;
 	
 	// run the algorithm
-	for (time=0; time<100;time++) {
-		if (processes[p_index].runTimeRemaining != 0 && time>=processes[p_index].arrivalTime){		// check if process is still running
+	for (time=0; time<120;time++) {	
+		if (processes[p_index].runTimeRemaining != 0 && time>=processes[p_index].arrivalTime) {		// check if process is still running
 			if (processes[p_index].runTimeRemaining == processes[p_index].runTime) 	// if not already added, add the completed time for the previous process
 				processes[p_index].startTime = time;
 			quantum[time] = processes[p_index].name;;	// if so, label time with process name
@@ -25,7 +25,7 @@ char * sjf(struct process *processes) {
 			if (processes[p_index].completeTime == -1 && processes[p_index].runTimeRemaining == 0) 	// if not already added, add the completed time for the previous process
 				processes[p_index].completeTime = time;
 			for (i=0;i<10;i++) {
-				if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == -1) { // lots of conditions
+				if (processes[i].arrivalTime <= time && time<100 && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == -1) { // lots of conditions
 					p_index = i; 			// update the index to the next processes
 					runTimeToken = processes[p_index].runTime;  // update the runTimeToken
 				} 

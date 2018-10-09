@@ -11,11 +11,11 @@ char * srt(struct process *processes) {
 	int time, runTimeToken, tempIndex, i;
 	
 	// run the algorithm
-	for (time=0; time<100;time++) {
+	for (time=0; time<120;time++) {
 		runTimeToken = 16;	// used to compare/change for every new runTime that is lower than the previous
 		tempIndex = p_index;	// store the current process index in case we go to a new process
 		for (i=0;i<10;i++) {	// find the shortest remaining time
-			if (processes[i].arrivalTime <= time && processes[i].runTimeRemaining < runTimeToken && processes[i].runTimeRemaining > 0) { // lots of conditions
+			if (time<100 && processes[i].arrivalTime <= time && processes[i].runTimeRemaining < runTimeToken && processes[i].runTimeRemaining > 0) { // lots of conditions
 				p_index = i; 	// change to the new process with a shorter run time
 				runTimeToken = processes[p_index].runTimeRemaining;   // update comparison runTime toekn
 			} 
