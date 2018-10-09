@@ -5,7 +5,7 @@
 #include "fcfs.c"
 #include "roundrobin.c"
 #include "sjf.c"
-//#include "srt.c"
+#include "srt.c"
 #include "nonpreemptivehpf.c"
 #include "preemptivehpf.c"
 
@@ -159,9 +159,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		// TODO SRJF
-		printf("  NOT COMPLETED YET\n");
-		// printf("  %s\n", srt(process_list[i]));
+		printf("  %s\n", srt(process_list[i]));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
@@ -185,7 +183,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		printf("  %s\n", nonpreemtivehpf(process_list[i]));
+		printf("  %s\n", nonpreemptivehpf(process_list[i], NUM_PROCESS));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
@@ -209,7 +207,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		printf("  %s\n", preemptivehpf(process_list[i]));
+		printf("  %s\n", preemptivehpf(process_list[i], NUM_PROCESS));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
