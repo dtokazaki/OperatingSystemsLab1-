@@ -83,7 +83,7 @@ char* roundRobin(struct process *array) {
 	int proc_left= size;
 	int pos = 0;
 	int oldpos;
-	char error[2] = "*";
+	char error[2] = "-";
 							
 	timechart = (char*) malloc((size*10+1)*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
@@ -103,7 +103,8 @@ char* roundRobin(struct process *array) {
 		}
 	}
 	
-	printQueue(array,size);									// Print function for debugging purposes
+	// Commenting this out for now. -SP
+	// printQueue(array,size);									// Print function for debugging purposes
 
 	return timechart;
 }
