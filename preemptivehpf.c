@@ -3,12 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "priorityQueue.c"
 #include "process.c"
-
-struct priorityQueue {
-        struct process queue[15];
-        int size;
-    };
 
 const char * preemptivehpf(struct process *processList, int size) {
     // initialize priority queues. For simplicity, queues[n] is priority n. priority 0 is unused
@@ -79,9 +75,10 @@ const char * preemptivehpf(struct process *processList, int size) {
         }
 	}
 
+    // 
+
 	// Ensure that the string is properly terminated.
 	output[100] = '\0';
-
 	// Return the string
 	return strdup(&output[0]);
 }

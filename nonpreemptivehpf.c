@@ -4,11 +4,7 @@
 #include <stdbool.h>
 
 #include "process.c"
-
-struct priorityQueue {
-        struct process queue[15];
-        int size;
-    };
+#include "priorityQueue.c"
 
 const char * nonpreemptivehpf(struct process *processList, int size) {
     // initialize priority queues. For simplicity, queues[n] is priority n. priority 0 is unused
