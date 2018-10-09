@@ -25,7 +25,7 @@ char * fcfs(struct process * process_list, int size) {
 	// Set the location in the 'queue' to the head.
 	int loc = 0;
 	// Initialize the output string.
-	char output[101];
+	char output[120];
 
 	// Initialize the current process with a remaining run time of zero.
 	struct process curProcess;
@@ -33,7 +33,7 @@ char * fcfs(struct process * process_list, int size) {
 	
 	// Run through time.
 	int time;
-	for(time = 0; time < 100; ++time) {
+	for(time = 0; time < 120; ++time) {
 		// If the process has completed, we need to move to the next process.
 		if(process_list[loc].runTimeRemaining == 0) {
 			process_list[loc].completeTime = time;
@@ -58,7 +58,7 @@ char * fcfs(struct process * process_list, int size) {
 	}
 
 	// Ensure that the string is properly terminated.
-	output[100] = '\0';
+	output[119] = '\0';
 
 	// Return the string.
 	return strdup(&output[0]);

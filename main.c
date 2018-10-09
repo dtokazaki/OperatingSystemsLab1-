@@ -5,6 +5,7 @@
 #include "fcfs.c"
 #include "roundrobin.c"
 #include "sjf.c"
+//#include "srt.c"
 
 // TODO Add srt.c and hpf.c
 

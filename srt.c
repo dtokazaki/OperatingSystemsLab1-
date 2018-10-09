@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "process.h"
+#include "process.c"
 
 typedef enum { false, true } bool;  
 
