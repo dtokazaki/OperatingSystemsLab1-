@@ -183,7 +183,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		//printf("  %s\n", nonpreemtivehpf(process_list[i], NUM_PROCESS));
+		printf("  %s\n", nonpreemptivehpf(process_list[i], NUM_PROCESS));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
