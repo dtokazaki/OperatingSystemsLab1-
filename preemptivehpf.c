@@ -80,6 +80,6 @@ const char * preemptivehpf(struct process *processList, int size) {
 	// Ensure that the string is properly terminated.
 	output[100] = '\0';
 
-	// Return the string and stats as a struct
+	// Return the string
 	return strdup(&output[0]);
 }
