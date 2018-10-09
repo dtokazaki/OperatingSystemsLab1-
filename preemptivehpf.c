@@ -19,7 +19,8 @@ const char * preemptivehpf(struct process *processList, int size) {
     queues[4].size = 0;
 
     // Split up all the processes into priority queues
-	for (int i = 0; i < size; i++){
+    int i;
+	for (i = 0; i < size; i++) {
 		queues[processList[i].priority].queue[queues[processList[i].priority].size++] = processList[i];
     }
 
@@ -40,7 +41,8 @@ const char * preemptivehpf(struct process *processList, int size) {
         queueIndex = 0;
 
         // find first process (by priority and arrival time) that has arrived and not finished yet
-        for (int i = 0; i < size; i++)
+        int i;
+        for (i = 0; i < size; i++)
         {
             // If we've reached the end of the current queue
             if(queueIndex == queues[curQueue].size) {
