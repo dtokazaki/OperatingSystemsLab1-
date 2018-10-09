@@ -20,7 +20,7 @@ const char * preemptivehpf(struct process *processList, int size) {
 
     // Split up all the processes into priority queues
 	for (int i = 0; i < size; i++){
-		queues[processList[i].priority].queue[queues.size++] = processList[i]
+		queues[processList[i].priority].queue[queues[processList[i].priority].size++] = processList[i];
     }
 
 	// Initialize the output string.
@@ -40,13 +40,13 @@ const char * preemptivehpf(struct process *processList, int size) {
         queueIndex = 0;
 
         // if a process is running, then run that one
-        if (curProcess != NULL && curProcess.runTimeRemaining != 0) {
+        if (curProcess != NULL && curProcess->runTimeRemaining != 0) {
             // Decrement run time remaining and add to output
-            --curProcess.runTimeRemaining;
-            output[time] = curProcess.name;
+            --curProcess->runTimeRemaining;
+            output[time] = curProcess->name;
             // if its now done, add its complete time
-            if (curProcess.runTimeRemaining = 0) {
-                curProcess.completeTime = time + 1;
+            if (curProcess->runTimeRemaining == 0) {
+                curProcess->completeTime = time + 1;
                 curProcess = NULL;
             }
         }
@@ -71,20 +71,20 @@ const char * preemptivehpf(struct process *processList, int size) {
             }
 
             // make a pointer to the current proccess for simplicity
-            curProcess = &queues[curQueue].queue[queueIndex]
+            curProcess = &queues[curQueue].queue[queueIndex];
 
             // If this process has arrived and is not done yet, run it
-            if (curProcess.arrivalTime <= time && curProcess.runTimeRemaining != 0) {
+            if (curProcess->arrivalTime <= time && curProcess->runTimeRemaining != 0) {
                 // Check if the process has just started running.
-                if(curProcess.runTime == curProcess.runTimeRemaining) {
-                    process_list[loc].startTime = time;
+                if(curProcess->runTime == curProcess->runTimeRemaining) {
+                    curProcess->startTime = time;
                 }
                 // Decrement run time remaining and add to output
-                --curProcess.runTimeRemaining;
-			    output[time] = curProcess.name;
+                --(curProcess->runTimeRemaining);
+			    output[time] = curProcess->name;
                 // if its now done, add its complete time
-                if (curProcess.runTimeRemaining = 0) {
-                    curProcess.completeTime = time + 1;
+                if (curProcess->runTimeRemaining == 0) {
+                    curProcess->completeTime = time + 1;
                 }
                 break;
             }
@@ -94,6 +94,6 @@ const char * preemptivehpf(struct process *processList, int size) {
 	// Ensure that the string is properly terminated.
 	output[100] = '\0';
 
-	// Return the string and stats as a struct
+	// Return the string
 	return strdup(&output[0]);
 }
