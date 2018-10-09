@@ -268,8 +268,8 @@ void reset_average(struct average * averages) {
 }
 
 struct average averages(struct process * process_list) {
-	int numStarted;
-	int numCompleted;
+	int numStarted = 0;
+	int numCompleted = 0;
 	int i;
 	double response = 0;
 	double waiting = 0;
