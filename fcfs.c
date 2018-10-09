@@ -37,7 +37,11 @@ char * fcfs(struct process * process_list, int size) {
 		// If the process has completed, we need to move to the next process.
 		if(process_list[loc].runTimeRemaining == 0) {
 			process_list[loc].completeTime = time;
-			++loc;
+			if (time >= 100 || loc >= size) {
+				output[time] = '-';
+			} else {
+				++loc;
+			}
 		}
 
 		// We need to check that the next process is ready to run.

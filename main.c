@@ -9,8 +9,6 @@
 #include "nonpreemptivehpf.c"
 #include "preemptivehpf.c"
 
-// TODO Add srt.c and hpf.c
-
 #define NUM_PROCESS 10
 
 struct average {
@@ -20,6 +18,10 @@ struct average {
 	int throughput;
 };
 
+struct hpfAverage {
+	struct average averages[5];
+};
+
 void print_process(struct process *);
 void sort_process(struct process *);
 void reset_process(struct process *);
@@ -27,6 +29,10 @@ void reset_average(struct average *);
 struct average averages(struct process *);
 void print_average(struct average);
 void print_comb_average(struct average);
+struct hpfAverage hpf_averages(struct process *);
+void print_hpf_average(struct hpfAverage);
+void print_hpf_comb_average(struct hpfAverage); 
+void reset_hpf_average(struct hpfAverage *); 
 
 int main() {
 	// Create a 2D array of processes. Each row contains ten processses for each execution.
@@ -178,6 +184,10 @@ int main() {
 
 	getchar();
 
+	struct hpfAverage hpfAverageReturns;
+	struct hpfAverage hpfAverageCombined;
+	reset_hpf_average(&hpfAverageCombined);
+
 	// HPF (non-preemtive) Test
 	printf("== Starting Highest Priority First (non-preemptive) Test ==\n");
 	for(i = 0; i < 5; ++i) {
@@ -186,19 +196,22 @@ int main() {
 		printf("  %s\n", nonpreemptivehpf(process_list[i], NUM_PROCESS));
 		
 		// Get the average values, print, and add them to algorithm wide average.
-		averageReturns = averages(process_list[i]);
-		print_average(averageReturns);
-		averageCombined.turnaround += averageReturns.turnaround;
-		averageCombined.waiting += averageReturns.waiting;
-		averageCombined.response += averageReturns.response;
+		hpfAverageReturns = hpf_averages(process_list[i]);
+		print_hpf_average(hpfAverageReturns);
+
+		for(j = 0; j < 5; ++j) {
+			hpfAverageCombined.averages[j].turnaround += hpfAverageReturns.averages[j].turnaround;
+			hpfAverageCombined.averages[j].waiting += hpfAverageReturns.averages[j].waiting;
+			hpfAverageCombined.averages[j].response += hpfAverageReturns.averages[j].response;
+		}
 
 		// Reset the process list for the next algorithm.
 		reset_process(process_list[i]);
 	}
 	// Print the total averages for HPF (non-preemptive)..
 	printf(" Total:\n");
-	print_comb_average(averageCombined);
-	reset_average(&averageCombined);
+	print_hpf_comb_average(hpfAverageCombined);
+	reset_hpf_average(&hpfAverageCombined);
 
 	getchar();
 	
@@ -210,19 +223,22 @@ int main() {
 		printf("  %s\n", preemptivehpf(process_list[i], NUM_PROCESS));
 		
 		// Get the average values, print, and add them to algorithm wide average.
-		averageReturns = averages(process_list[i]);
-		print_average(averageReturns);
-		averageCombined.turnaround += averageReturns.turnaround;
-		averageCombined.waiting += averageReturns.waiting;
-		averageCombined.response += averageReturns.response;
+		hpfAverageReturns = hpf_averages(process_list[i]);
+		print_hpf_average(hpfAverageReturns);
+		
+		for(j = 0; j < 5; ++j) {
+			hpfAverageCombined.averages[j].turnaround += hpfAverageReturns.averages[j].turnaround;
+			hpfAverageCombined.averages[j].waiting += hpfAverageReturns.averages[j].waiting;
+			hpfAverageCombined.averages[j].response += hpfAverageReturns.averages[j].response;
+		}
 
 		// Reset the process list for the next algorithm.
 		reset_process(process_list[i]);
 	}
 	// Print the total averages for HPF (preemptive).
 	printf(" Total:\n");
-	print_comb_average(averageCombined);
-	reset_average(&averageCombined);
+	print_hpf_comb_average(hpfAverageCombined);
+	reset_hpf_average(&hpfAverageCombined);
 
 	return 0;
 }
@@ -306,4 +322,95 @@ void print_comb_average(struct average averages) {
 	averages.waiting = averages.waiting / 5;
 	averages.response = averages.response / 5;
 	print_average(averages);
+}
+
+struct hpfAverage hpf_averages(struct process * process_list) {
+	// The averages at each priority level.
+	struct hpfAverage average;
+	// The number of processes started and completed at each level.
+	int numStart[5];
+	int numComplete[5];	
+
+	// Ensure all the initial averages are set to zero.
+	int i;
+	for(i = 0; i < 5; ++i) {
+		average.averages[i].turnaround = 0;
+		average.averages[i].waiting = 0;
+		average.averages[i].response = 0;
+		numStart[i] = 0;
+		numComplete[i] = 0;
+	}
+
+	int waiting;
+	int turnaround;
+
+	for(i = 0; i < NUM_PROCESS; ++i) {
+		// Check that the process has started.
+		if(process_list[i].startTime != -1) {
+			// Update global stats.
+			average.averages[0].response += process_list[i].startTime - process_list[i].arrivalTime;
+			++numStart[0];
+
+			// Update level stats.
+			average.averages[process_list[i].priority].response += process_list[i].startTime - process_list[i].arrivalTime;
+			++numStart[process_list[i].priority];
+		}
+		// Check that the process has completed.
+		if(process_list[i].completeTime != -1) {
+			// Update global stats.
+			waiting = (process_list[i].completeTime - process_list[i].arrivalTime) - process_list[i].runTime;
+			turnaround = process_list[i].completeTime - process_list[i].arrivalTime;
+			average.averages[0].waiting += waiting;
+			average.averages[0].turnaround += turnaround;
+			++numComplete[0];
+
+			// Update level stats.
+			average.averages[process_list[i].priority].waiting += waiting;
+			average.averages[process_list[i].priority].turnaround += turnaround;
+			++numComplete[process_list[i].priority];
+		}
+	}
+
+	// Compute average based on number started and completed.
+	for(i = 0; i < 5; ++i) {
+		average.averages[i].response = average.averages[i].response / numStart[i];
+		average.averages[i].waiting = average.averages[i].waiting / numComplete[i];
+		average.averages[i].turnaround = average.averages[i].turnaround / numComplete[i];
+	}
+
+	return average;
+}
+
+void print_hpf_average(struct hpfAverage average) {
+	int i;
+	for(i = 0; i < 5; ++i) {
+		// Print the header.
+		if(i == 0) {
+			printf("  All Queues:\n");
+		} else {
+			printf("  Priority Queue %i:\n", i);
+		}
+		// Print the information.
+		printf("   Avg. Turnaround Time: %.2f | Avg. Waiting Time: %.2f | Avg. Response Time: %.2f\n",
+			average.averages[i].turnaround, average.averages[i].waiting, average.averages[i].response);
+	}
+}
+
+void print_hpf_comb_average(struct hpfAverage average) {
+	int i;
+	for(i = 0; i < 5; ++i) {
+		average.averages[i].turnaround = average.averages[i].turnaround / 5;
+		average.averages[i].waiting = average.averages[i].waiting / 5;
+		average.averages[i].response = average.averages[i].response / 5;
+	}
+	print_hpf_average(average);
+}
+
+void reset_hpf_average(struct hpfAverage * average) {
+	int i;
+	for(i = 0; i < 5; ++i) {
+		(*average).averages[i].turnaround = 0;
+		(*average).averages[i].waiting = 0;
+		(*average).averages[i].response = 0;
+	}
 }
