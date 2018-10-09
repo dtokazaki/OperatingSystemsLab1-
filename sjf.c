@@ -13,25 +13,26 @@ char * sjf(struct process *processes) {
 	
 	// run the algorithm
 	for (time=0; time<100;time++) {
-		if (processes[p_index].runTimeRemaining != 0 && time>=processes[p_index].arrivalTime){  // check if process is still running
+		if (processes[p_index].runTimeRemaining != 0 && time>=processes[p_index].arrivalTime){		// check if process is still running
+			if (processes[p_index].runTimeRemaining == processes[p_index].runTime) 	// if not already added, add the completed time for the previous process
+				processes[p_index].startTime = time;
 			quantum[time] = processes[p_index].name;;	// if so, label time with process name
 			processes[p_index].runTimeRemaining--;		// decrement the running time
 		}
 		else {
 			tempIndex = p_index;				// store p_index in a temp
 			runTimeToken = 11;				// reset runTimeToken
-			if (processes[p_index].completeTime == -1) 	// if not already added, add the completed time for the previous process
+			if (processes[p_index].completeTime == 0 && processes[p_index].runTimeRemaining == 0) 	// if not already added, add the completed time for the previous process
 				processes[p_index].completeTime = time;
 			for (i=0;i<10;i++) {
-				if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == -1) { // lots of conditions
+				if (processes[i].arrivalTime <= time && i!=tempIndex && processes[i].runTime < runTimeToken && processes[i].completeTime == 0) { // lots of conditions
 					p_index = i; 			// update the index to the next processes
 					runTimeToken = processes[p_index].runTime;  // update the runTimeToken
 				} 
 			}
 
-			if (tempIndex == p_index) {			// if p_index didn't change (no processes arrived in time), reset previous processes
+			if (tempIndex == p_index)			// if p_index didn't change (no processes arrived in time), reset previous processes
 				quantum[time] = '-';
-			}
 			else {
 				quantum[time] = processes[p_index].name;	// label time with new process name
 				processes[p_index].startTime = time;		// add the start time for new process
