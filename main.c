@@ -20,7 +20,7 @@ struct average {
 void print_process(struct process *);
 void sort_process(struct process *);
 void reset_process(struct process *);
-void reset_average(struct average);
+void reset_average(struct average *);
 struct average averages(struct process *);
 void print_average(struct average);
 void print_comb_average(struct average);
@@ -99,7 +99,7 @@ int main() {
 	// Print the total averages for FCFS.
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	getchar();
 
@@ -123,7 +123,7 @@ int main() {
 	// Print the total averages for RR.
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	getchar();
 
@@ -147,7 +147,7 @@ int main() {
 	// Print the total averages for SJF.
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	getchar();	
 
@@ -173,7 +173,7 @@ int main() {
 	// Print the total averages for SRJF.
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	getchar();
 
@@ -199,7 +199,7 @@ int main() {
 	// Print the total averages for HPF (non-preemptive)..
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	getchar();
 	
@@ -225,7 +225,7 @@ int main() {
 	// Print the total averages for HPF (preemptive).
 	printf(" Total:\n");
 	print_comb_average(averageCombined);
-	reset_average(averageCombined);
+	reset_average(&averageCombined);
 
 	return 0;
 }
@@ -264,10 +264,10 @@ void reset_process(struct process * process_list) {
 	}
 }
 
-void reset_average(struct average averages) {
-	averages.turnaround = 0;
-	averages.waiting = 0;
-	averages.response = 0;
+void reset_average(struct average * averages) {
+	(*averages).turnaround = 0;
+	(*averages).waiting = 0;
+	(*averages).response = 0;
 }
 
 struct average averages(struct process * process_list) {
