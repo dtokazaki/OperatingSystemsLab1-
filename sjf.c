@@ -21,7 +21,7 @@ char * sjf(struct process *processes) {
 		}
 		else {
 			tempIndex = p_index;				// store p_index in a temp
-			runTimeToken = 11;				// reset runTimeToken
+			runTimeToken = 16;				// reset runTimeToken
 			if (processes[p_index].completeTime == -1 && processes[p_index].runTimeRemaining == 0) 	// if not already added, add the completed time for the previous process
 				processes[p_index].completeTime = time;
 			for (i=0;i<10;i++) {
