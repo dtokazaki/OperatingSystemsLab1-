@@ -6,11 +6,11 @@
 
 typedef enum { false, true } bool;  
 
-char * sjf(struct process *processes) {
+char * srt(struct process *processes) {
 
 	char quantum[120]; // our timetracker of 100  time slices
 	int p_index = 0; // keeps track of the current process in our process array
-	int time, runTimeToken, tempIndex;
+	int time, runTimeToken, tempIndex, i;
 	bool change;
 	
 	// run the algorithm

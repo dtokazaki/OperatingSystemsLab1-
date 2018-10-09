@@ -38,7 +38,6 @@ void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, 
 		}
 		else {
 			(*quanta)++;
-			(*proc_left)--;
 			return;
 		}
 
