@@ -6,6 +6,8 @@
 #include "roundrobin.c"
 #include "sjf.c"
 //#include "srt.c"
+#include "nonpreemptivehpf.c"
+#include "preemptivehpf.c"
 
 // TODO Add srt.c and hpf.c
 
@@ -183,9 +185,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		// TODO HPF (NP)
-		printf("  NOT COMPLETED YET\n");
-		// printf("  %s\n", roundRobin(process_list[i]));
+		printf("  %s\n", nonpreemtivehpf(process_list[i]));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
@@ -209,9 +209,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
-		// TODO HPF (P)_
-		printf("  NOT COMPLETED YET\n");
-		// printf("  %s\n", roundRobin(process_list[i]));
+		printf("  %s\n", preemptivehpf(process_list[i]));
 		
 		// Get the average values, print, and add them to algorithm wide average.
 		averageReturns = averages(process_list[i]);
