@@ -66,7 +66,7 @@ int main() {
 	struct average averageReturns;
 	struct average averageCombined = {0, 0, 0};
 
-	printf("Press any key to go through each set of tests\n");
+	printf("Press enter to go through each set of tests\n");
 	getchar();
 
 	printf("Processes\n");
@@ -204,7 +204,7 @@ int main() {
 	getchar();
 	
 	// HPF (preemptive) Test
-	printf("== Starting Highest Priority First (preemtive) Test ==\n");
+	printf("== Starting Highest Priority First (preemptive) Test ==\n");
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
