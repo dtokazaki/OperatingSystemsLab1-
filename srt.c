@@ -12,7 +12,7 @@ char * srt(struct process *processes) {
 	
 	// run the algorithm
 	for (time=0; time<100;time++) {
-		runTimeToken = 11;	// used to compare/change for every new runTime that is lower than the previous
+		runTimeToken = 16;	// used to compare/change for every new runTime that is lower than the previous
 		tempIndex = p_index;	// store the current process index in case we go to a new process
 		for (i=0;i<10;i++) {	// find the shortest remaining time
 			if (processes[i].arrivalTime <= time && processes[i].runTimeRemaining < runTimeToken && processes[i].runTimeRemaining > 0) { // lots of conditions
