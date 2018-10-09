@@ -87,7 +87,7 @@ char* roundRobin(struct process *array) {
 	timechart = (char*) malloc(((size*10)+11)*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
 	
-	 while(proc_left > 0 && quanta <= (size*10)) {						// Exit loop when no more processes left
+	 while(proc_left > 0 && quanta <= ((size*10)+10)) {						// Exit loop when no more processes left
 		oldpos = pos;
 		pos = avail(array, pos, quanta, size);
 	
