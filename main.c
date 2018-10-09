@@ -6,8 +6,9 @@
 #include "roundrobin.c"
 #include "sjf.c"
 
+// TODO Add srt.c and hpf.c
 
-#define NUM_PROCESS 15
+#define NUM_PROCESS 10
 
 struct average {
 	double turnaround;
@@ -16,7 +17,7 @@ struct average {
 	int throughput;
 };
 
-void print_process(struct process);
+void print_process(struct process *);
 void sort_process(struct process *);
 void reset_process(struct process *);
 void reset_average(struct average);
@@ -37,7 +38,7 @@ int main() {
 	for(i = 0; i < 5; ++i) {
 		for(j = 0; j < NUM_PROCESS; ++j) {
 			arrivalTime = rand() % 100;
-			runTime = (rand() % 10) + 1;
+			runTime = (rand() % 10) + 6;
 			priority = (rand() % 4) + 1;
 
 			process_list[i][j].name = ' ';
@@ -65,6 +66,18 @@ int main() {
 	struct average averageReturns;
 	struct average averageCombined = {0, 0, 0};
 
+	printf("Press any key to go through each set of tests\n");
+	getchar();
+
+	printf("Processes\n");
+	for(i = 0; i < 5; ++i) {
+		printf(" Test Set %i\n", i + 1);
+		print_process(process_list[i]);
+		printf("\n");
+	}
+
+	// Wait for user input
+	getchar();
 
 	// FCFS Test
 	printf("\n== Starting First-Come First-Serve Test ==\n");
@@ -88,9 +101,10 @@ int main() {
 	print_comb_average(averageCombined);
 	reset_average(averageCombined);
 
+	getchar();
 
 	// RR Test
-	printf("== Starting Round Robin Test == \n");
+	printf("== Starting Round Robin Test ==\n");
 	for(i = 0; i < 5; ++i) {
 		// Print test number and the process order.
 		printf(" Test %i:\n", i + 1);
@@ -111,28 +125,120 @@ int main() {
 	print_comb_average(averageCombined);
 	reset_average(averageCombined);
 
+	getchar();
 
 	// SJF Test
-	printf("\n == Starting Shortest Job First Test == \n\n");
-	printf("%s\n", sjf(process_list[2]));
+	printf("== Starting Shortest Job First Test ==\n");
+	for(i = 0; i < 5; ++i) {
+		// Print test number and the process order.
+		printf(" Test %i:\n", i + 1);
+		printf("  %s\n", sjf(process_list[i]));
+		
+		// Get the average values, print, and add them to algorithm wide average.
+		averageReturns = averages(process_list[i]);
+		print_average(averageReturns);
+		averageCombined.turnaround += averageReturns.turnaround;
+		averageCombined.waiting += averageReturns.waiting;
+		averageCombined.response += averageReturns.response;
+
+		// Reset the process list for the next algorithm.
+		reset_process(process_list[i]);
+	}
+	// Print the total averages for SJF.
+	printf(" Total:\n");
+	print_comb_average(averageCombined);
+	reset_average(averageCombined);
+
+	getchar();	
 
 	// SRJF Test
-	printf("\n == Starting Shortest Remaining Job First Test == \n\n");
-	
+	printf("== Starting Shortest Remaining Job First Test ==\n");
+	for(i = 0; i < 5; ++i) {
+		// Print test number and the process order.
+		printf(" Test %i:\n", i + 1);
+		// TODO SRJF
+		printf("  NOT COMPLETED YET\n");
+		// printf("  %s\n", srt(process_list[i]));
+		
+		// Get the average values, print, and add them to algorithm wide average.
+		averageReturns = averages(process_list[i]);
+		print_average(averageReturns);
+		averageCombined.turnaround += averageReturns.turnaround;
+		averageCombined.waiting += averageReturns.waiting;
+		averageCombined.response += averageReturns.response;
+
+		// Reset the process list for the next algorithm.
+		reset_process(process_list[i]);
+	}
+	// Print the total averages for SRJF.
+	printf(" Total:\n");
+	print_comb_average(averageCombined);
+	reset_average(averageCombined);
+
+	getchar();
 
 	// HPF (non-preemtive) Test
-	printf("\n == Starting Highest Priority First (non-preemptive) Test == \n\n");
+	printf("== Starting Highest Priority First (non-preemptive) Test ==\n");
+	for(i = 0; i < 5; ++i) {
+		// Print test number and the process order.
+		printf(" Test %i:\n", i + 1);
+		// TODO HPF (NP)
+		printf("  NOT COMPLETED YET\n");
+		// printf("  %s\n", roundRobin(process_list[i]));
+		
+		// Get the average values, print, and add them to algorithm wide average.
+		averageReturns = averages(process_list[i]);
+		print_average(averageReturns);
+		averageCombined.turnaround += averageReturns.turnaround;
+		averageCombined.waiting += averageReturns.waiting;
+		averageCombined.response += averageReturns.response;
 
+		// Reset the process list for the next algorithm.
+		reset_process(process_list[i]);
+	}
+	// Print the total averages for HPF (non-preemptive)..
+	printf(" Total:\n");
+	print_comb_average(averageCombined);
+	reset_average(averageCombined);
 
+	getchar();
+	
 	// HPF (preemptive) Test
-	printf("\n == Starting Highest Priority First (preemtive) Test == \n\n");
+	printf("== Starting Highest Priority First (preemtive) Test ==\n");
+	for(i = 0; i < 5; ++i) {
+		// Print test number and the process order.
+		printf(" Test %i:\n", i + 1);
+		// TODO HPF (P)_
+		printf("  NOT COMPLETED YET\n");
+		// printf("  %s\n", roundRobin(process_list[i]));
+		
+		// Get the average values, print, and add them to algorithm wide average.
+		averageReturns = averages(process_list[i]);
+		print_average(averageReturns);
+		averageCombined.turnaround += averageReturns.turnaround;
+		averageCombined.waiting += averageReturns.waiting;
+		averageCombined.response += averageReturns.response;
 
+		// Reset the process list for the next algorithm.
+		reset_process(process_list[i]);
+	}
+	// Print the total averages for HPF (preemptive).
+	printf(" Total:\n");
+	print_comb_average(averageCombined);
+	reset_average(averageCombined);
 
 	return 0;
 }
 
-void print_process(struct process process) {
-	printf("Name: %c\nArrival Time: %i\nRun Time: %i\nPriority: %i\n", process.name, process.arrivalTime, process.runTime, process.priority);
+void print_process(struct process * process_list) {
+	int i;
+	for(i = 0; i < NUM_PROCESS; ++i) {
+		printf("  Name: %c | Arrival Time: %02i | Run Time: %02i | Priority: %02i\n", 
+			process_list[i].name,
+			process_list[i].arrivalTime,
+			process_list[i].runTime,
+			process_list[i].priority);
+	}
 }
 
 void sort_process(struct process * process_list) {

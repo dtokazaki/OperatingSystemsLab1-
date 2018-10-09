@@ -15,7 +15,7 @@
 #ifndef COEN383_LAB1
 #define COEN383_LAB1
 
-#define NUM_PROCESS 15
+#define NUM_PROCESS 10
 void printQueue(struct process *array, int size) {
 	
 	int i;
