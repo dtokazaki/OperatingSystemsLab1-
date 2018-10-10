@@ -32,9 +32,27 @@ const char * preemptivehpf(struct process *processList, int size) {
 	
 	// Run through time.
 	int time;
-	for(time = 0; time < 100; ++time) {
+	for(time = 0; time < 119; ++time) {
         curQueue = 4;
         queueIndex = 0;
+
+        // if we are past t=100, only let the current running proccess finish
+        if (time > 100) {
+            if (curProcess->arrivalTime <= time && curProcess->runTimeRemaining != 0) {
+                // Check if the process has just started running.
+                if(curProcess->runTime == curProcess->runTimeRemaining) {
+                    curProcess->startTime = time;
+                }
+                // Decrement run time remaining and add to output
+                --(curProcess->runTimeRemaining);
+			    output[time] = curProcess->name;
+                // if its now done, add its complete time
+                if (curProcess->runTimeRemaining == 0) {
+                    curProcess->completeTime = time + 1;
+                }
+                break;
+            }
+        }
 
         // find first process (by priority and arrival time) that has arrived and not finished yet
         int i;
@@ -114,7 +132,7 @@ const char * preemptivehpf(struct process *processList, int size) {
 
 
 	// Ensure that the string is properly terminated.
-	output[100] = '\0';
+	output[119] = '\0';
 	// Return the string
 	return strdup(&output[0]);
 }

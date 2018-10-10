@@ -46,8 +46,9 @@ const char * nonpreemptivehpf(struct process *processList, int size) {
         // printf("got here 2.1");
         // getchar();
 
+        bool processRunning = false;
         // if a process is running, then run that one
-        if (curProcess != NULL && curProcess->runTimeRemaining != 0) {
+        if (processRunning) {
             // printf("got here 2.2");
             // getchar();
             // Decrement run time remaining and add to output
@@ -58,7 +59,7 @@ const char * nonpreemptivehpf(struct process *processList, int size) {
             // if its now done, add its complete time
             if (curProcess->runTimeRemaining == 0) {
                 curProcess->completeTime = time + 1;
-                curProcess = NULL;
+                processRunning = false;
             }
             // printf("got here 2.2.1");
             // getchar();
@@ -95,6 +96,7 @@ const char * nonpreemptivehpf(struct process *processList, int size) {
                 // Check if the process has just started running.
                 if(curProcess->runTime == curProcess->runTimeRemaining) {
                     curProcess->startTime = time;
+                    processRunning = true;
                 }
                 // Decrement run time remaining and add to output
                 --(curProcess->runTimeRemaining);
@@ -102,6 +104,7 @@ const char * nonpreemptivehpf(struct process *processList, int size) {
                 // if its now done, add its complete time
                 if (curProcess->runTimeRemaining == 0) {
                     curProcess->completeTime = time + 1;
+                    processRunning = false;
                 }
                 break;
             }
