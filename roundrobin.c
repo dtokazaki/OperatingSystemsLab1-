@@ -25,7 +25,7 @@ void printQueue(struct process *array, int size) {
 	}
 }
 
-void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, char *timetable) {	// main function that runs the simulation
+void run(struct process *array, int *pos, int *proc_left, int *quanta,int *size, char *timetable) {	// main function that runs the simulation
 
 	char *string;
 
@@ -37,7 +37,11 @@ void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, 
 			array[*pos].startTime = *quanta;
 		}
 		else {
-			(*quanta)++;
+			(*proc_left)--;
+			(*size)--;
+			(*pos)++;
+			if((*pos) == *size)
+				*pos = 0;
 			return;
 		}
 
@@ -54,7 +58,7 @@ void run(struct process *array, int *pos, int *proc_left, int *quanta,int size, 
 
 	(*quanta)++;	 										// increase the quanta
 	(*pos)++;
-	if(*pos == size)										// if the pos reaches the end of the array, start over from the begining
+	if(*pos == *size)										// if the pos reaches the end of the array, start over from the begining
 		*pos = 0;
 
 }
@@ -84,11 +88,12 @@ char* roundRobin(struct process *array) {
 	int oldpos;
 	char error[2] = "-";
 							
-	timechart = (char*) malloc(((size*15)+1)*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
+	timechart = (char*) malloc(((size*20)+1)*sizeof(char));						// allocate enough memory for maximum number of time slots in the CPU + 1 for null character at the end
 	memset(timechart,'\0',sizeof(timechart));						// zero out memory to prevent garbage data
 	
-	 while(proc_left > 0 && quanta <= ((size*15))) {						// Exit loop when no more processes left
-		oldpos = pos;
+	 while(proc_left > 0 && quanta <= ((size*20))) {						// Exit loop when no more processes left
+		if(pos != -1)
+			oldpos = pos;
 		pos = avail(array, pos, quanta, size);
 	
 		if(pos == -1) {
@@ -98,12 +103,12 @@ char* roundRobin(struct process *array) {
 		}
 		else {	
 			
-			run(array,&pos,&proc_left,&quanta,size,timechart);			// Only run if there is a process available, and has arrived	
+			run(array,&pos,&proc_left,&quanta,&size,timechart);			// Only run if there is a process available, and has arrived	
 		}
 	}
 	
 	// Commenting this out for now. -SP
-	// printQueue(array,size);									// Print function for debugging purposes
+	 printQueue(array,size);									// Print function for debugging purposes
 
 	return timechart;
 }
