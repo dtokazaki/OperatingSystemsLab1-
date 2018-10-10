@@ -8,7 +8,7 @@
 
 const char * preemptivehpf(struct process *processList, int size) {
     // initialize priority queues. For simplicity, queues[n] is priority n. priority 0 is unused
-    struct priorityQueue queues[4];
+    struct priorityQueue queues[5];
     queues[1].size = 0;
     queues[2].size = 0;
     queues[3].size = 0;
@@ -21,7 +21,7 @@ const char * preemptivehpf(struct process *processList, int size) {
     }
 
 	// Initialize the output string.
-	char output[101];
+	char output[120];
 
     // Select the highest priority queue
     int curQueue;
@@ -38,7 +38,7 @@ const char * preemptivehpf(struct process *processList, int size) {
 
         // find first process (by priority and arrival time) that has arrived and not finished yet
         int i;
-        for (i = 0; i < size; i++)
+        for (i = 0; i < size + 1; i++)
         {
             // If we've reached the end of the current queue
             if(queueIndex == queues[curQueue].size) {
@@ -76,7 +76,7 @@ const char * preemptivehpf(struct process *processList, int size) {
 	}
 
     // Update original process list with starttime and completetime of each process
-    for (i = 0; i < size; i++) {
+    for (i = 0; i < size + 1; i++) {
         curQueue = 4;
         queueIndex = 0;
 
@@ -108,6 +108,8 @@ const char * preemptivehpf(struct process *processList, int size) {
             
             queueIndex++;
         }
+        // printf("Quanta complete. Ran job: %c", output[time]);
+        // getchar();
     }
 
 
